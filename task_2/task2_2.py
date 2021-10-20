@@ -101,16 +101,16 @@ def method_gaus(func, e, k, data):
 
 def draw_fig(data, prm, gaus, ned):
     ax = plt.axes()
-    ax.set_title("Линейная аппроксимирующая функция")
+    ax.set_title("Рациональная аппроксимирующая функция")
     ax.set_xlabel('x')
     ax.set_ylabel('y')
     n = list(range(1, 2001))
     ax.scatter(data[:, 0], data[:, 1], label="Исходные данные")
-    y = func1(data[:, 0], prm[0], prm[1])
+    y = func2(data[:, 0], prm[0], prm[1])
     ax.plot(data[:, 0], y, label="Перебор")
-    y = func1(data[:, 0], gaus[0], gaus[1])
+    y = func2(data[:, 0], gaus[0], gaus[1])
     ax.plot(data[:, 0], y, label="Гаус")
-    y = func1(data[:, 0], ned[0], ned[1])
+    y = func2(data[:, 0], ned[0], ned[1])
     ax.plot(data[:, 0], y, label="Нелдер-Мида")
     ax.legend()
 
@@ -140,9 +140,9 @@ if __name__ == '__main__':
 
     for func in [func1, func2]:
         k = str(func).split()[1]
-        param = method_prm(func1, e, n, data)
+        param = method_prm(func, e, n, data)
         print(param[1], param[2])
-        param1 = method_gaus(func1, e, n, data)
+        param1 = method_gaus(func, e, n, data)
         print(param1[1], param1[2])
         if not k in answer:
             answer[k] = []
@@ -153,9 +153,9 @@ if __name__ == '__main__':
 
     x0 = np.array([0 ,0])
 
-    res = minimize(test_func1, x0, method="Nelder-Mead", options={'xtol': 1e-3, 'disp': True})
-    answer['func1'].append(res.x)
-    print(res.nfev, res.nit)
+    # res = minimize(test_func1, x0, method="Nelder-Mead", options={'xtol': 1e-3, 'disp': True})
+    # answer['func1'].append(res.x)
+    # print(res.nfev, res.nit)
 
     res = minimize(test_func2, x0, method="Nelder-Mead", options={'xtol': 1e-3, 'disp': True})
     answer['func2'].append(res.x)
@@ -163,7 +163,7 @@ if __name__ == '__main__':
 
     print(answer)
 
-    draw_fig(data, answer['func1'][0], answer['func1'][1], answer['func1'][2])
+    draw_fig(data, answer['func2'][0], answer['func2'][1], answer['func2'][2])
 
 
 
