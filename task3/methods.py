@@ -80,7 +80,7 @@ def gradient(eps, func, funca, funcb):
         prB = prb
         pra = derivative(funca, A)
         prb = derivative(funcb, B)
-        step_a, step_b = abs((np.array([a0, b0]) - np.array([A, B])) * (np.array([prA, prB]) - np.array([pra, prb]))) / ((np.array([prA, prB]) * np.array([pra, prb])))
+        step_a, step_b = abs((np.array([a0, b0]) - np.array([A, B])) * (np.array([prA, prB]) - np.array([pra, prb]))) / ((np.array([prA, prB]) - np.array([pra, prb])) ** 2)
         a0 = A
         b0 = B
         A = A - step_a * pra
@@ -93,18 +93,18 @@ def gradient(eps, func, funca, funcb):
 def draw_fig(data, func, grad, cg, ncg, lm):
     k = str(func).split()[1]
     ax = plt.axes()
-    ax.set_title("Test")
+    ax.set_title(k)
     ax.set_xlabel('x')
     ax.set_ylabel('y')
     ax.scatter(data[:, 0], data[:, 1], label="Исходные данные")
-    y = func(grad, 1)
-    ax.plot(data[:, 0], y, label="Градиент")
-    y = func(cg, 1)
-    ax.plot(data[:, 0], y, label="Сопряженный градиент")
-    y = func(ncg, 1)
-    ax.plot(data[:, 0], y, label="Ньютон")
-    y = func(lm, 1)
-    ax.plot(data[:, 0], y, label="Левенберг-Марквардта")
+    y_cg = func(cg, 1)
+    ax.plot(data[:, 0], y_cg, label="Сопряженный градиент")
+    y_ncg = func(ncg, 1)
+    ax.plot(data[:, 0], y_ncg, label="Ньютон")
+    y_lm = func(lm, 1)
+    ax.plot(data[:, 0], y_lm, label="Левенберг-Марквардта")
+    y_grad = func(grad, 1)
+    ax.plot(data[:, 0], y_grad, label="Градиент")
     ax.legend()
     pth = os.getcwd()
 
